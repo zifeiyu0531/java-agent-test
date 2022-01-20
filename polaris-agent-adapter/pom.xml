@@ -17,4 +17,11 @@
         <module>pinpoint</module>
     </modules>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.navercorp.pinpoint</groupId>
+            <artifactId>pinpoint-bootstrap</artifactId>
+            <version>${pinpoint.version}</version>
+        </dependency>
+    </dependencies>
 </project>

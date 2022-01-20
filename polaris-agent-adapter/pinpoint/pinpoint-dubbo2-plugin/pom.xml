@@ -19,5 +19,7 @@
             <artifactId>polaris-agent-dubbo2-plugin</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+
     </dependencies>
 </project>
