@@ -12,7 +12,7 @@ rm -rf PolarisAgent/plugin/*
 mvn -B package --file pom.xml
 
 # add plugin
-mv -r target/* PolarisAgent/plugin/
+mv target/* PolarisAgent/plugin/
 
 # zip
 zip -r PolarisAgent.zip PolarisAgent
