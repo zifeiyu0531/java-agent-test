@@ -1,7 +1,6 @@
-package cn.polarismesh.agent.plugin.dubbo2;
+package cn.polarismesh.agent.adapter.dubbo2;
 
-import cn.polarismesh.agent.plugin.dubbo2.interceptor.DubboInvokerInterceptor;
-import cn.polarismesh.agent.plugin.dubbo2.interceptor.DubboProviderInterceptor;
+import cn.polarismesh.agent.adapter.dubbo2.interceptor.*;
 import com.navercorp.pinpoint.bootstrap.instrument.InstrumentClass;
 import com.navercorp.pinpoint.bootstrap.instrument.InstrumentException;
 import com.navercorp.pinpoint.bootstrap.instrument.InstrumentMethod;
@@ -38,7 +37,7 @@ public class DubboPlugin implements ProfilerPlugin, TransformTemplateAware {
             final InstrumentClass target = instrumentor.getInstrumentClass(loader, className, classfileBuffer);
             InstrumentMethod invokeMethod = target.getDeclaredMethod("refer", "java.lang.Class", "org.apache.dubbo.common.URL");
             if (invokeMethod != null) {
-                invokeMethod.addInterceptor(DubboInvokerInterceptor.class);
+                invokeMethod.addInterceptor(DubboInvokerAdapter.class);
             }
             return target.toBytecode();
         }
@@ -50,7 +49,7 @@ public class DubboPlugin implements ProfilerPlugin, TransformTemplateAware {
             final InstrumentClass target = instrumentor.getInstrumentClass(loader, className, classfileBuffer);
             InstrumentMethod invokeMethod = target.getDeclaredMethod("export", "org.apache.dubbo.rpc.Invoker");
             if (invokeMethod != null) {
-                invokeMethod.addInterceptor(DubboProviderInterceptor.class);
+                invokeMethod.addInterceptor(DubboProviderAdapter.class);
             }
             return target.toBytecode();
         }
@@ -62,11 +61,11 @@ public class DubboPlugin implements ProfilerPlugin, TransformTemplateAware {
             final InstrumentClass target = instrumentor.getInstrumentClass(loader, className, classfileBuffer);
             InstrumentMethod constructor = target.getConstructor("org.apache.dubbo.rpc.cluster.Directory", "org.apache.dubbo.common.URL");
             if (constructor != null) {
-                constructor.addInterceptor(DubboCluster.class);
+                constructor.addInterceptor(DubboClusterInvokerAdapter.class);
             }
             InstrumentMethod invokeMethod = target.getDeclaredMethod("invoke", "org.apache.dubbo.rpc.Invocation");
             if (invokeMethod != null) {
-                invokeMethod.addInterceptor(DubboInvokeInterceptor.class);
+                invokeMethod.addInterceptor(DubboInvokeAdapter.class);
             }
             return target.toBytecode();
         }
@@ -78,7 +77,7 @@ public class DubboPlugin implements ProfilerPlugin, TransformTemplateAware {
             final InstrumentClass target = instrumentor.getInstrumentClass(loader, className, classfileBuffer);
             InstrumentMethod invokeMethod = target.getDeclaredMethod("getOrCreateHolder", "java.lang.String");
             if (invokeMethod != null) {
-                invokeMethod.addInterceptor(DubboLoadBalanceInterceptor.class);
+                invokeMethod.addInterceptor(DubboLoadBalanceAdapter.class);
             }
             return target.toBytecode();
         }

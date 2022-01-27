@@ -1,15 +1,17 @@
-package cn.polarismesh.agent.plugin.dubbo2.interceptor;
+package cn.polarismesh.agent.adapter.dubbo2.interceptor;
 
-import cn.polarismesh.agent.plugin.dubbo2.entity.InvokerMap;
+import cn.polarismesh.agent.plugin.dubbo2.interceptor.DubboInvokerInterceptor;
 import com.navercorp.pinpoint.bootstrap.interceptor.AroundInterceptor;
-import org.apache.dubbo.rpc.Invoker;
 
 /**
  * 服务发现拦截器0：记录ip:port与Invoker对象的映射关系
  */
-public class DubboInvokerInterceptor implements AroundInterceptor {
+public class DubboInvokerAdapter implements AroundInterceptor {
+    private static final DubboInvokerInterceptor interceptor = new DubboInvokerInterceptor();
+
     @Override
     public void before(Object target, Object[] args) {
+        interceptor.before(target, args);
     }
 
     /**
@@ -23,8 +25,6 @@ public class DubboInvokerInterceptor implements AroundInterceptor {
      */
     @Override
     public void after(Object target, Object[] args, Object result, Throwable throwable) {
-        Invoker invoker = (Invoker) result;
-        String address = invoker.getUrl().getAddress();
-        InvokerMap.put(address, invoker);
+        interceptor.after(target, args, result, throwable);
     }
 }

@@ -1,20 +1,17 @@
-package cn.polarismesh.agent.plugin.dubbo2.interceptor;
+package cn.polarismesh.agent.adapter.dubbo2.interceptor;
 
-import cn.polarismesh.agent.plugin.dubbo2.utils.PolarisUtil;
+import cn.polarismesh.agent.plugin.dubbo2.interceptor.DubboInvokeInterceptor;
 import com.navercorp.pinpoint.bootstrap.interceptor.AroundInterceptor;
-import org.apache.dubbo.common.URL;
-import org.apache.dubbo.rpc.Invocation;
-import org.apache.dubbo.rpc.Result;
 
 /**
  * 统计时延信息、上报服务调用结果
  */
-public class DubboInvokeInterceptor implements AroundInterceptor {
-    private long startTimeMilli;
+public class DubboInvokeAdapter implements AroundInterceptor {
+    private static final DubboInvokeInterceptor interceptor = new DubboInvokeInterceptor();
 
     @Override
     public void before(Object target, Object[] args) {
-        this.startTimeMilli = System.currentTimeMillis();
+        interceptor.before(target, args);
     }
 
     /**
@@ -28,9 +25,6 @@ public class DubboInvokeInterceptor implements AroundInterceptor {
      */
     @Override
     public void after(Object target, Object[] args, Object result, Throwable throwable) {
-        long delay = System.currentTimeMillis() - this.startTimeMilli;
-        Invocation invocation = (Invocation) args[0];
-        URL url = invocation.getInvoker().getUrl();
-        PolarisUtil.reportInvokeResult(url, delay, (Result) result, throwable);
+        interceptor.after(target, args, result, throwable);
     }
 }
