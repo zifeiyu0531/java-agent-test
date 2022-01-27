@@ -15,7 +15,6 @@
     <modules>
         <module>pinpoint-spring-cloud-2021-plugin</module>
         <module>pinpoint-dubbo2-plugin</module>
-        <module>assembly</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -42,22 +41,4 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.2</version>
-                <configuration>
-                    <archive>
-                        <manifestEntries>
-                            <Pinpoint-Plugin-Id>${project.groupId}:${project.artifactId}</Pinpoint-Plugin-Id>
-                            <Pinpoint-Plugin-Compiler-Version>${java.version}</Pinpoint-Plugin-Compiler-Version>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>
